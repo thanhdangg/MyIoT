@@ -2,7 +2,9 @@ package com.example.myiot.ui;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,13 +20,17 @@ public class CircleProgressBar extends View{
     public CircleProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         paint = new Paint();
-        progress = 0;
+        progress = 60;
     }
     public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
     public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+    public void setProgress(int progress) {
+        this.progress = progress;
+        invalidate();
     }
 
     @Override
@@ -33,21 +39,26 @@ public class CircleProgressBar extends View{
 
         int width = getWidth();
         int height = getHeight();
-        int radius = Math.min(width, height) / 2;
+        int radius = (int)(Math.min(width, height) / 2* 0.8);
         int cx = width / 2;
         int cy = height / 2;
 
         // Draw the background circle
         paint.setColor(Color.LTGRAY);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(10); // Increase the stroke width
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawCircle(cx, cy, radius, paint);
 
         // Calculate the sweep angle based on progress
         float sweepAngle = (float) progress / 100 * 360;
 
+        // Set the stroke width of the progress bar
+        paint.setStrokeWidth(30); // Increase the stroke width
+
+        // Create a gradient from light blue to dark blue
+        paint.setShader(new LinearGradient(0, 0, width, height, Color.GREEN, Color.DKGRAY, Shader.TileMode.CLAMP));
+
         // Draw the progress arc
-        paint.setColor(Color.BLUE);
         canvas.drawArc(cx - radius, cy - radius, cx + radius, cy + radius, -90, sweepAngle, false, paint);
 
         // Draw the progress text in the center
@@ -59,56 +70,5 @@ public class CircleProgressBar extends View{
         float textHeight = paint.descent() - paint.ascent();
         float textOffset = (textHeight / 2) - paint.descent();
         canvas.drawText(progressText, cx - (textWidth / 2), cy + textOffset, paint);
-    }
-    public void setProgress(int progress) {
-        this.progress = progress;
-        invalidate(); // Redraw the view
-    }
-    public void setMax(int max) {
-    }
-    public void setProgressColor(int color) {
-    }
-    public void setProgressWidth(int width) {
-    }
-    public void setProgressBackgroundColor(int color) {
-    }
-    public void setProgressBackgroundWidth(int width) {
-    }
-    public void setProgressTextSize(int size) {
-    }
-    public void setProgressTextColor(int color) {
-    }
-    public void setProgressText(String text) {
-    }
-    public void setProgressTextVisibility(boolean visibility) {
-    }
-    public void setProgressTextTypeface(Typeface typeface) {
-    }
-    public void setProgressTextTypeface(String typeface) {
-    }
-    public void setProgressTextTypeface(int typeface) {
-    }
-    public void setProgressTextTypeface(Typeface typeface, int style) {
-    }
-    public void setProgressTextTypeface(String typeface, int style) {
-    }
-    public void setProgressTextTypeface(int typeface, int style) {
-    }
-    public void setProgressTextTypeface(Typeface typeface, int style, int size) {
-    }
-    public void setProgressTextTypeface(String typeface, int style, int size) {
-    }
-    public void setProgressTextTypeface(int typeface, int style, int size) {
-    }
-    public void setProgressTextTypeface(Typeface typeface, int style, int size, int color) {
-    }
-    public void setProgressTextTypeface(String typeface, int style, int size, int color) {
-    }
-    public void setProgressTextTypeface(int typeface, int style, int size, int color) {
-    }
-    public void setProgressTextTypeface(Typeface typeface, int style, int size, int color, int shadowColor) {
-    }
-    public void setProgressTextTypeface(String typeface, int style, int size, int color, int shadow){
-
     }
 }

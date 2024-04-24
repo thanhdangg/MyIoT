@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -42,6 +43,8 @@ dependencies {
     implementation(libs.constraintlayout)
 
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
 
 
     testImplementation(libs.junit)
