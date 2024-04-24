@@ -8,7 +8,8 @@
     <com.example.myiot.ui.CircleProgressBar
         android:id="@+id/circleProgressBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
 
     </com.example.myiot.ui.CircleProgressBar>
 

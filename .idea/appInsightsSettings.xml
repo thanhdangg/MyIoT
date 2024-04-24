@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.myiot" />
+                  <option name="mobileSdkAppId" value="1:374890609953:android:e7ef465cd3703dd9dbd260" />
+                  <option name="projectId" value="iot-soil-moisture-sensor" />
+                  <option name="projectNumber" value="374890609953" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
