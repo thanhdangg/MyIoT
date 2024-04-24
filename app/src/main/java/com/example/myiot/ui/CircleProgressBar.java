@@ -20,7 +20,7 @@ public class CircleProgressBar extends View{
     public CircleProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         paint = new Paint();
-        progress = 70;
+        progress = 60;
     }
     public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -45,7 +45,7 @@ public class CircleProgressBar extends View{
 
         // Draw the background circle
         paint.setColor(Color.LTGRAY);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(10); // Increase the stroke width
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawCircle(cx, cy, radius, paint);
 
@@ -53,7 +53,7 @@ public class CircleProgressBar extends View{
         float sweepAngle = (float) progress / 100 * 360;
 
         // Set the stroke width of the progress bar
-        paint.setStrokeWidth(20); // Increase the stroke width
+        paint.setStrokeWidth(30); // Increase the stroke width
 
         // Create a gradient from light blue to dark blue
         paint.setShader(new LinearGradient(0, 0, width, height, Color.GREEN, Color.DKGRAY, Shader.TileMode.CLAMP));
