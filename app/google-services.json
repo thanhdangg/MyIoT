@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "374890609953",
+    "firebase_url": "https://iot-soil-moisture-sensor-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "iot-soil-moisture-sensor",
+    "storage_bucket": "iot-soil-moisture-sensor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374890609953:android:e7ef465cd3703dd9dbd260",
+        "android_client_info": {
+          "package_name": "com.example.myiot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374890609953-0v8a5aslrjhhf34t81lf5tou83uou64q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv4q9sIvg6H-wrL8xDJYZ5EWigUz_Ogq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374890609953-0v8a5aslrjhhf34t81lf5tou83uou64q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
