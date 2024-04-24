@@ -45,6 +45,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
 
 
     testImplementation(libs.junit)

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class CircleProgressBar extends View{
@@ -14,13 +15,26 @@ public class CircleProgressBar extends View{
     private Paint paint;
     private int progress;
 
+    public Paint getPaint() {
+        return paint;
+    }
+
+    public void setPaint(Paint paint) {
+        this.paint = paint;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
     public CircleProgressBar(Context context) {
         super(context);
     }
     public CircleProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         paint = new Paint();
-        progress = 60;
+//        progress = 80;
+
     }
     public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -30,13 +44,14 @@ public class CircleProgressBar extends View{
     }
     public void setProgress(int progress) {
         this.progress = progress;
-        invalidate();
+//        invalidate();
+//        postInvalidate();
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         int width = getWidth();
         int height = getHeight();
         int radius = (int)(Math.min(width, height) / 2* 0.8);

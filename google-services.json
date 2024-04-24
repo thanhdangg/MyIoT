@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "764026739196",
+    "firebase_url": "https://myiot-3695e-default-rtdb.firebaseio.com",
+    "project_id": "myiot-3695e",
+    "storage_bucket": "myiot-3695e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764026739196:android:e3d24928175041778bba79",
+        "android_client_info": {
+          "package_name": "com.example.myiot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764026739196-vdj380kfjt40li2o8fv74ji4kh65kvu8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOicqn3BjZqOOtOpmPH-FAoP59NEeCVQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764026739196-vdj380kfjt40li2o8fv74ji4kh65kvu8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
