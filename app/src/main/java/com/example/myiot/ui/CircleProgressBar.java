@@ -4,86 +4,70 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-public class CircleProgressBar extends View{
+public class CircleProgressBar extends View {
 
-    private Paint paint;
-    private int progress;
-
-    public Paint getPaint() {
-        return paint;
-    }
-
-    public void setPaint(Paint paint) {
-        this.paint = paint;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
+    private int progress = 0;
+    private int maxProgress = 100;
+    private int progressBarWidth = 30; // Độ rộng của thanh tiến trình
 
     public CircleProgressBar(Context context) {
         super(context);
     }
+
     public CircleProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        paint = new Paint();
-//        progress = 80;
-
     }
+
     public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-    public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-    public void setProgress(int progress) {
-        this.progress = progress;
-//        invalidate();
-//        postInvalidate();
-
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int width = getWidth();
-        int height = getHeight();
-        int radius = (int)(Math.min(width, height) / 2* 0.8);
-        int cx = width / 2;
-        int cy = height / 2;
 
-        // Draw the background circle
-        paint.setColor(Color.LTGRAY);
-        paint.setStrokeWidth(10); // Increase the stroke width
+        int viewWidth = getWidth();
+        int viewHeight = getHeight();
+
+        int centerX = viewWidth / 2;
+        int centerY = viewHeight / 2;
+        int radius = Math.min(centerX, centerY) - progressBarWidth / 2 - 10; // Khoảng trống xung quanh và điều chỉnh độ rộng của thanh tiến trình
+
+        Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        canvas.drawCircle(cx, cy, radius, paint);
+        paint.setStrokeWidth(progressBarWidth);
+        paint.setColor(Color.GRAY);
+        canvas.drawCircle(centerX, centerY, radius, paint); // Vẽ vòng tròn ngoài
 
-        // Calculate the sweep angle based on progress
-        float sweepAngle = (float) progress / 100 * 360;
+        RectF oval = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
 
-        // Set the stroke width of the progress bar
-        paint.setStrokeWidth(30); // Increase the stroke width
+        // Tạo một gradient cho thanh tiến trình
+        LinearGradient gradient = new LinearGradient(centerX - radius, centerY, centerX + radius, centerY,
+                Color.BLUE, Color.RED, Shader.TileMode.CLAMP);
 
-        // Create a gradient from light blue to dark blue
-        paint.setShader(new LinearGradient(0, 0, width, height, Color.GREEN, Color.DKGRAY, Shader.TileMode.CLAMP));
+        paint.setShader(gradient);
 
-        // Draw the progress arc
-        canvas.drawArc(cx - radius, cy - radius, cx + radius, cy + radius, -90, sweepAngle, false, paint);
+        float sweepAngle = 360 * progress / maxProgress;
+        canvas.drawArc(oval, -90, sweepAngle, false, paint); // Vẽ vòng tròn thể hiện tiến trình
 
-        // Draw the progress text in the center
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(50);
+        // Vẽ số phần trăm ở giữa
         paint.setStyle(Paint.Style.FILL);
-        String progressText = progress + "%";
-        float textWidth = paint.measureText(progressText);
-        float textHeight = paint.descent() - paint.ascent();
-        float textOffset = (textHeight / 2) - paint.descent();
-        canvas.drawText(progressText, cx - (textWidth / 2), cy + textOffset, paint);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(100);
+        String text = progress + "%";
+        float textWidth = paint.measureText(text);
+        canvas.drawText(text, centerX - textWidth / 2, centerY + 50, paint);
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+        invalidate(); // Yêu cầu vẽ lại khi tiến trình thay đổi
     }
 }

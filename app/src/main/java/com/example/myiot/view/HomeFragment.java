@@ -1,5 +1,6 @@
 package com.example.myiot.view;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.example.myiot.R;
 import com.example.myiot.databinding.FragmentHomeBinding;
@@ -25,9 +28,16 @@ public class HomeFragment extends Fragment implements ProgressListener {
     private FragmentHomeBinding binding;
     private WebSocketClient webSocketClient;
     private CircleProgressBar circleProgressBar;
+    private int sensor = 0;
+    private int motor = 0;
+    private int threshold = 0;
+    private FirebaseDatabase database;
+    DatabaseReference motorRef;
+    DatabaseReference thresholdRef;
+    DatabaseReference sensorRef;
+
 
     public HomeFragment() {
-        // Required empty public constructor
     }
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
@@ -49,28 +59,74 @@ public class HomeFragment extends Fragment implements ProgressListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        database = FirebaseDatabase.getInstance();
+        thresholdRef = database.getReference("/moisture/threshold");
+        sensorRef = database.getReference("/moisture/sensor");
+        motorRef = database.getReference("/moisture/motor");
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("/moisture/sensor");
+        binding.seekBarThreshold.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                thresholdRef.setValue(progress);
+                if (sensor < progress) {
+                    motorRef.setValue(1);
+                    binding.switchMotor.setChecked(true);
+                } else {
+                    motorRef.setValue(0);
+                    binding.switchMotor.setChecked(false);
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
-//        circleProgressBar.setProgress(30);
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        motorRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Integer value = dataSnapshot.getValue(Integer.class);
-                    Log.d("Firebase", "Value is: " + value);
-                    if (value != null) {
+                    if (value == 1) {
+                        binding.switchMotor.setChecked(true);
+                    } else {
+                        binding.switchMotor.setChecked(false);
+                    }
+                    Log.d("Firebase", "Motor value is: " + value);
+                } else {
+                    Log.d("Firebase", "No data at this location.");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("Firebase", "Failed to read value.", error.toException());
+            }
+        });
+
+        sensorRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    sensor = dataSnapshot.getValue(Integer.class);
+                    Log.d("Firebase", "Value is: " + sensor);
+                    if (sensor != 0) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                circleProgressBar.setProgress(value);
-                                Log.d("progess bar", "value : "+ circleProgressBar.getProgress());
+                                binding.circleProgressBar.setProgress(sensor);
                             }
                         });
+                    }
+                    if (sensor < threshold) {
+                        motorRef.setValue(1);
+                    } else {
+                        motorRef.setValue(0);
                     }
                 } else {
                     Log.d("Firebase", "No data at this location.");
@@ -83,6 +139,33 @@ public class HomeFragment extends Fragment implements ProgressListener {
                 Log.w("Firebase", "Failed to read value.", error.toException());
             }
         });
+
+        thresholdRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    threshold = dataSnapshot.getValue(Integer.class);
+                    Log.d("Firebase", "Threshold value is: " + threshold);
+                    binding.tvThreshold.setText(threshold + "%");
+                    if (sensor < threshold) {
+                        motorRef.setValue(1);
+                    } else {
+                        motorRef.setValue(0);
+                    }
+                } else {
+                    Log.d("Firebase", "No data at this location.");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("Firebase", "Failed to read value.", error.toException());
+            }
+        });
+
+
+
         return binding.getRoot();
     }
 
