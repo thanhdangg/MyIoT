@@ -30,11 +30,13 @@ public class HomeFragment extends Fragment implements ProgressListener {
     private CircleProgressBar circleProgressBar;
     private int sensor = 0;
     private int motor = 0;
-    private int threshold = 0;
+    private int min_threshold = 0;
+    private int max_threshold = 100;
     private FirebaseDatabase database;
     DatabaseReference motorRef;
-    DatabaseReference thresholdRef;
     DatabaseReference sensorRef;
+    DatabaseReference maxThresholdRef;
+    DatabaseReference minThresholdRef;
 
 
     public HomeFragment() {
@@ -52,7 +54,7 @@ public class HomeFragment extends Fragment implements ProgressListener {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         webSocketClient = new WebSocketClient();
         circleProgressBar = binding.circleProgressBar;
-        webSocketClient = new WebSocketClient(this); // Modify this line
+        webSocketClient = new WebSocketClient(this);
         webSocketClient.start();
     }
 
@@ -61,21 +63,18 @@ public class HomeFragment extends Fragment implements ProgressListener {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         database = FirebaseDatabase.getInstance();
-        thresholdRef = database.getReference("/moisture/threshold");
         sensorRef = database.getReference("/moisture/sensor");
         motorRef = database.getReference("/moisture/motor");
+        maxThresholdRef = database.getReference("/moisture/max_threshold");
+        minThresholdRef = database.getReference("/moisture/min_threshold");
 
-        binding.seekBarThreshold.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.seekBarMaxThreshold.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                thresholdRef.setValue(progress);
-                if (sensor < progress) {
-                    motorRef.setValue(1);
-                    binding.switchMotor.setChecked(true);
-                } else {
-                    motorRef.setValue(0);
-                    binding.switchMotor.setChecked(false);
+                if (fromUser) {
+                    maxThresholdRef.setValue(progress);
                 }
+                binding.tvMaxThreshold.setText(progress + "%");
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -83,6 +82,61 @@ public class HomeFragment extends Fragment implements ProgressListener {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        binding.seekBarMinThreshold.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    minThresholdRef.setValue(progress);
+                }
+                binding.tvMinThreshold.setText(progress + "%");
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        minThresholdRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    min_threshold = dataSnapshot.getValue(Integer.class);
+                    binding.seekBarMinThreshold.setProgress(min_threshold);
+                    binding.tvMinThreshold.setText(min_threshold + "%");
+                    Log.d("Firebase", "Min threshold is: " + min_threshold);
+                } else {
+                    Log.d("Firebase", "No data at this location.");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w("Firebase", "Failed to read value.", error.toException());
+            }
+        });
+
+        maxThresholdRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    max_threshold = dataSnapshot.getValue(Integer.class);
+                    binding.seekBarMaxThreshold.setProgress(max_threshold);
+                    binding.tvMaxThreshold.setText(max_threshold + "%");
+                    Log.d("Firebase", "Max threshold is: " + max_threshold);
+                } else {
+                    Log.d("Firebase", "No data at this location.");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w("Firebase", "Failed to read value.", error.toException());
             }
         });
 
@@ -104,7 +158,6 @@ public class HomeFragment extends Fragment implements ProgressListener {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
                 Log.w("Firebase", "Failed to read value.", error.toException());
             }
         });
@@ -123,9 +176,9 @@ public class HomeFragment extends Fragment implements ProgressListener {
                             }
                         });
                     }
-                    if (sensor < threshold) {
+                    if (sensor <= min_threshold) {
                         motorRef.setValue(1);
-                    } else {
+                    } else if (sensor >= max_threshold) {
                         motorRef.setValue(0);
                     }
                 } else {
@@ -139,33 +192,6 @@ public class HomeFragment extends Fragment implements ProgressListener {
                 Log.w("Firebase", "Failed to read value.", error.toException());
             }
         });
-
-        thresholdRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    threshold = dataSnapshot.getValue(Integer.class);
-                    Log.d("Firebase", "Threshold value is: " + threshold);
-                    binding.tvThreshold.setText(threshold + "%");
-                    if (sensor < threshold) {
-                        motorRef.setValue(1);
-                    } else {
-                        motorRef.setValue(0);
-                    }
-                } else {
-                    Log.d("Firebase", "No data at this location.");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("Firebase", "Failed to read value.", error.toException());
-            }
-        });
-
-
-
         return binding.getRoot();
     }
 
