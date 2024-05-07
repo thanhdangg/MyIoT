@@ -3,4 +3,23 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="motor">Trạng thái bơm nước</string>
+    <string name="setting_info">Tối ưu hóa tưới cây thông qua Hệ Thống IoT và Cảm Biến Độ Ẩm Đất</string>
+    <string name="about_iot">🐧 Nông nghiệp thông minh là một mô hình sản xuất nông nghiệp hiện đại bằng cách ứng dụng các tiến bộ về khoa học kỹ thuật trong sản xuất</string>
+    <string name="about_iot_in_farm">🐧 IoT trong nông nghiệp là một hệ thống tích hợp các công nghệ hiện đại vào trong quá trình sản xuất   </string>
+    <string name="muctieu">🐧 Mục  tiêu: tối ưu hóa quản lý và canh tác trong ngành nông nghiệp </string>
+    <string name="ketluan">👉 Từ đó chúng em nghĩ ra một mô hình đơn giản:   điều khiển tưới cây tự động thông qua các thông số của cảm biến</string>
+    <string name="about_system_title">Giới thiệu về hệ thống</string>
+    <string name="titleCambien">1. Cảm biến độ ẩm đất</string>
+    <string name="contexDoam">Độ ẩm đất đóng vai trò quan trọng trong sự phát triển và sức khỏe của cây cối. Nó ảnh hưởng đến quá trình hấp thụ nước và chất dinh dưỡng của cây thông qua rễ, cũng như quá trình quang hợp và trao đổi khí qua lá. Mức độ độ ẩm phù hợp giúp cây cối duy trì sự cân bằng nước và chất dinh dưỡng trong cơ thể cây, từ đó tăng cường sức đề kháng, giảm nguy cơ stress cây và tối ưu hóa sản xuất cây trồng. Đồng thời, việc quản lý độ ẩm đất cũng đóng vai trò quan trọng trong việc ngăn chặn sự phát triển của vi khuẩn và nấm gây hại</string>
+    <string name="contexCambien">Để giám sát độ ẩm đất trong cây, ta có thể dùng cảm biến độ ẩm đất để đo độ ẩm đất, đây là một thiết bị dùng để đo lường và theo dõi mức độ ẩm của đất. Thiết bị này thường sử dụng các cảm biến điện trở hoặc dung lượng để đo lường lượng nước hiện có trong đất.</string>
+    <string name="titleESP">2. Module Wifi</string>
+    <string name="contexESP">Để nắm bắt và theo dõi giá trị của cảm biến đồng thời điều khiển các thiết bị, cần phải có một module để kết nối đến wifi để gửi các giá trị cảm biến cũng như trạng thái thiết bị, và chúng em đã sử dụng module wifi ESP8266.</string>
+    <string name="titleFirebase"><![CDATA[3. FIREBASE & REALTIME DATABASE]]></string>
+    <string name="contexFirebase">Firebase là một nền tảng phát triển ứng dụng di động và web của Google, cung cấp các dịch vụ đám mây như lưu trữ dữ liệu, xác thực người dùng, phân tích và nhiều hơn nữa.
+        Realtime Database là một trong những dịch vụ cơ bản của Firebase, cung cấp một cơ sở dữ liệu JSON thời gian thực, cho phép ứng dụng ghi và đọc dữ liệu một cách tức thì.</string>
+    <string name="titlevaitrofirebase">Vai trò của Firebase và Realtime Database khi kết hợp với ESP8266:</string>
+    <string name="contextvaitro1">👉 ESP8266 có thể gửi dữ liệu từ các cảm biến như độ ẩm đất cũng như trạng thái hoạt động của các thiết bị đến Firebase Realtime Database thông qua giao thức HTTP</string>
+    <string name="contextvaitro2">👉 Dữ liệu được gửi đến Realtime Database sẽ được lưu trữ và cập nhật tức thì, giúp ứng dụng di động hoặc web có thể theo dõi và hiển thị thông tin độ ẩm đất một cách thời gian thực.</string>
+
+
 </resources>
