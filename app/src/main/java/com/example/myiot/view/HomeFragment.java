@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -176,10 +177,12 @@ public class HomeFragment extends Fragment implements ProgressListener {
                             }
                         });
                     }
+
+                    // Kiểm tra giá trị cảm biến với ngưỡng và điều khiển motor
                     if (sensor <= min_threshold) {
-                        motorRef.setValue(1);
+                        motorRef.setValue(1); // Bật motor
                     } else if (sensor >= max_threshold) {
-                        motorRef.setValue(0);
+                        motorRef.setValue(0); // Tắt motor
                     }
                 } else {
                     Log.d("Firebase", "No data at this location.");
@@ -192,6 +195,21 @@ public class HomeFragment extends Fragment implements ProgressListener {
                 Log.w("Firebase", "Failed to read value.", error.toException());
             }
         });
+        binding.switchMotor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // Bật motor
+                    motorRef.setValue(1);
+                } else {
+                    // Tắt motor
+                    motorRef.setValue(0);
+                }
+            }
+        });
+
+
+
         return binding.getRoot();
     }
 

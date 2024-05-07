@@ -118,11 +118,12 @@
         android:layout_gravity="center_horizontal"
         android:scaleX="2"
         android:scaleY="2"
-        android:text="Trạng thái bơm nước"
+        android:text="@string/motor"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:enabled="false"
+        android:trackTint="@color/switch_track_tint"
+        android:thumbTint="@color/switch_thumb_tint"
         >
     </Switch>
 
